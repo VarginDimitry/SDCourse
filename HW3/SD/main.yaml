@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: videosvc
+  namespace: media
+spec:
+  replicas: 3
+  selector:
+    matchLabels: { app: videosvc }
+  template:
+    metadata:
+      labels: { app: videosvc }
+    spec:
+      containers:
+      - name: app
+        image: yourrepo/videosvc:1.0
+        ports:
+        - containerPort: 50051
+        readinessProbe:
+          grpc:
+            port: 50051
+            service: ""
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 2
+          failureThreshold: 3
+        livenessProbe:
+          grpc:
+            port: 50051
+            service: ""
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 2
+          failureThreshold: 3

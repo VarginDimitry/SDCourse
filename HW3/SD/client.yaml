@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: videosvc-headless
+  namespace: media
+spec:
+  clusterIP: None
+  selector: { app: videosvc }
+  ports:
+  - name: grpc
+    port: 50051
+    targetPort: 50051
